@@ -1,0 +1,32 @@
+# 1. Install
+
+make dev-install
+
+# 2. Drop your GROQ_API_KEY into .env
+
+cp .env.example .env
+
+# 3. Place data
+
+# - MedQA JSONL files in data/raw/medqa/
+
+# - 18 textbook .txt/.md in data/raw/textbooks/
+
+# 4. Build indices
+
+make index
+
+# 5. Smoke-test
+
+make test-unit
+make api # then visit http://localhost:8000/docs
+
+# 6. Run an architecture
+
+make run-naive # or run-self / run-hybrid / run-multihop
+make run-all # all four + comparison report under results/reports/
+Known follow-ups (not blockers):
+
+Drop in real MedQA JSONL files — the loader handles both common schemas.
+The RagasEvaluator calls Groq's judge model directly; if RAGAS ≥ 0.2 needs explicit LangChain LLM wiring, swap in a LangchainLLMWrapper around GroqClient.complete.
+LIME/SHAP wrappers run sequential Groq calls per perturbation — bound num_samples to 30–50 in settings.yaml until you size the budget.
