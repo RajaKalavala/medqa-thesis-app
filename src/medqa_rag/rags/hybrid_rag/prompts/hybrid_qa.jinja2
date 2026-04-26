@@ -1,0 +1,16 @@
+You are answering a medical board-style multiple-choice question.
+The evidence below was retrieved by combining dense semantic search and sparse
+keyword matching, then re-ranked with Reciprocal Rank Fusion.
+
+Use only the provided evidence — do not fabricate.
+
+Retrieved evidence ({{ n_docs }} fused passages):
+---
+{{ context }}
+---
+
+{{ question_block }}
+
+Respond in this exact format:
+Reasoning: <one short paragraph grounded in the evidence>
+Answer: <one of A, B, C, D>

@@ -1,0 +1,83 @@
+# ============================================================
+# medqa-rag — single source of runtime configuration.
+# Override any value via environment variable using prefix
+# MEDQA_ and double-underscore for nesting:
+#   MEDQA_LLM__MODEL=llama-3.1-8b-instant
+# ============================================================
+
+env: development
+
+paths:
+  data_dir: ./data
+  raw_medqa: ./data/raw/medqa
+  raw_textbooks: ./data/raw/textbooks
+  processed_dir: ./data/processed
+  embeddings_dir: ./data/embeddings
+  index_dir: ./data/indices
+  faiss_dir: ./data/indices/faiss
+  bm25_dir: ./data/indices/bm25
+  log_dir: ./logs
+  results_dir: ./results
+
+logging:
+  level: INFO
+  json: true
+  console: true
+
+llm:
+  provider: groq
+  model: llama-3.3-70b-versatile
+  judge_model: llama-3.1-8b-instant
+  temperature: 0.0
+  max_tokens: 1024
+  timeout_seconds: 60
+  max_retries: 5
+  rate_limit_rpm: 30
+  cache_enabled: true
+  cache_dir: ./data/processed/llm_cache
+
+embedder:
+  model_name: NeuML/pubmedbert-base-embeddings
+  device: auto                     # auto | cpu | cuda
+  batch_size: 32
+  normalize: true
+  cache_enabled: true
+
+chunking:
+  strategy: recursive              # recursive | fixed
+  chunk_size: 512
+  chunk_overlap: 64
+
+retrieval:
+  top_k: 5
+  faiss_metric: cosine             # cosine | l2 | ip
+  bm25_k1: 1.5
+  bm25_b: 0.75
+
+evaluation:
+  ragas_metrics:
+    - faithfulness
+    - answer_correctness
+    - context_precision
+    - context_recall
+    - answer_relevancy
+  judge_temperature: 0.0
+  test_set_size: null              # null = full set; int for subset
+  random_seed: 42
+
+explainability:
+  sample_size: 400
+  stratify_by: subject
+  lime_num_samples: 50
+  shap_num_samples: 50
+
+api:
+  host: 0.0.0.0
+  port: 8000
+  cors_origins:
+    - "*"
+  request_timeout: 120
+
+mlflow:
+  tracking_uri: ./results/mlruns
+  experiment_name: medqa-rag-comparison

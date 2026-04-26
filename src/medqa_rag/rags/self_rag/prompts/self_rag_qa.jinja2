@@ -1,0 +1,20 @@
+{% if retrieval_used -%}
+You are answering a medical board-style multiple-choice question. The system
+chose to retrieve external evidence because the model's self-confidence was low.
+Use only the evidence below — do not fabricate.
+
+Retrieved evidence ({{ n_docs }} passages):
+---
+{{ context }}
+---
+{%- else -%}
+You are answering a medical board-style multiple-choice question. The system
+judged that internal knowledge is sufficient and skipped retrieval.
+Answer carefully from your own knowledge, but say "uncertain" if unsure.
+{%- endif %}
+
+{{ question_block }}
+
+Respond in this exact format:
+Reasoning: <one short paragraph>
+Answer: <one of A, B, C, D>

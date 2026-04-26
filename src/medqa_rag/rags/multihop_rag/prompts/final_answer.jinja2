@@ -1,0 +1,21 @@
+You are answering a medical board-style multiple-choice question by reasoning
+across an evidence chain assembled from multiple retrieval hops.
+
+Sub-queries the system used:
+{% for q in sub_queries -%}
+- {{ q }}
+{% endfor %}
+
+Evidence chain ({{ n_docs }} passages):
+---
+{{ context }}
+---
+
+{{ question_block }}
+
+Reason step by step, citing passages as [1], [2], etc.
+Then output your final answer.
+
+Respond in this exact format:
+Reasoning: <chain of thought citing passages>
+Answer: <one of A, B, C, D>
